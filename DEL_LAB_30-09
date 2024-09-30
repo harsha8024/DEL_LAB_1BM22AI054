@@ -1,0 +1,94 @@
+1. Demonstrate the following activation functions and plot graphs: 
+1. Threshold function
+2. Sigmoid 
+3. Relu
+4. Leaky Relu
+5. Softmax
+6. tanh
+
+2. Create a neural network which performs XOR operation, uses tanh as the activation function in output layer.
+
+
+
+1.
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+def step(x):
+    return np.where(x < 0, 0, 1)
+
+
+def sigmoid(x):
+  return 1/(1+np.exp(-x))
+
+def relu(x):
+  return np.maximum(0,x)
+
+
+def leakyrelu(x):
+  return np.maximum(0.01*x,x)
+
+def softmax(x):
+  exp_x = np.exp(x)
+  return exp_x / np.sum(exp_x)
+
+
+def tan_h(x):
+  return np.tanh(x)
+
+x = np.linspace(-5, 5, 100)
+
+plt.figure(figsize=(12, 8))
+
+# Step Function
+plt.subplot(3, 2, 1)
+plt.title('Step Function')
+plt.plot(x, step(x))
+plt.grid()
+
+# Sigmoid Function
+plt.subplot(3, 2, 2)
+plt.title('Sigmoid Function')
+plt.plot(x, sigmoid(x))
+plt.grid()
+
+# ReLU Function
+plt.subplot(3, 2, 3)
+plt.title('ReLU Function')
+plt.plot(x, relu(x))
+plt.grid()
+
+# Leaky ReLU Function
+plt.subplot(3, 2, 4)
+plt.title('Leaky ReLU Function')
+plt.plot(x, leakyrelu(x))
+plt.grid()
+
+# Softmax Function (for demonstration, using a vector of x)
+softmax_values = softmax(x)
+plt.subplot(3, 2, 5)
+plt.title('Softmax Function')
+plt.plot(x, softmax_values)
+plt.grid()
+
+# Tanh Function
+plt.subplot(3, 2, 6)
+plt.title('Tanh Function')
+plt.plot(x, tan_h(x))
+plt.grid()
+
+plt.tight_layout()
+plt.show()
+
+
+
+2.
+a=int(input("Enter the number: "))
+b=int(input("Enter the number: "))
+w=np.matrix([[0.5,-0.5]])
+i=np.matrix([[a,b]])
+t=(w*i.T)[0,0]
+x=tan_h(t)
+print(int(bool(x)))
