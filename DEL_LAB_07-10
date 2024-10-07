@@ -1,0 +1,20 @@
+Create and implement a basic neuron model with a computational framework. Integrate essential elements like input nodes, weight parameters, bias, and an activation function (Sigmoid, Hyperbolic, Tangent, ReLu) to construct a comprehensive representation of a neuron. Evaluate and observe how each activavation function influences the networks behavior and effectiveness in handling different types of data.
+
+
+
+
+
+
+
+
+weights={'w11':0.3,'w12':0.3,'w21':0.2,'w22':0.2,'w31':0.08,'w32':0.014}
+
+i1=0.35
+i2=0.7
+h1=relu(i1*weights['w11']+i2*weights['w21'])
+h2=relu(i1*weights['w12']+i2*weights['w22'])
+o=relu(h1*weights['w31']+h2*weights['w32'])
+target=0.5
+print(o)
+error=0.5*((target-o)**2)
+print(error)
