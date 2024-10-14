@@ -1,0 +1,52 @@
+Develop and implement a program to execute the perceptron learning algorithm customized to train a single layer perceptron for binary classification tasks, create a robust algorithm that refines the model's weight iteratively resulting in a proficient single layer perceptron capable of effectively handling binary classification challenges.
+
+
+import numpy as np
+import pandas as pd
+from sklearn.metrics import confusion_matrix
+
+from sklearn.preprocessing import StandardScaler
+
+
+weights = np.matrix([[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+                      1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0,
+                      2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.1]])
+learning_rate=0.01
+def heaviside(x):
+  if x>=0:
+    return 1
+  else:
+    return 0
+
+output_size = 1 
+
+data=pd.read_csv("/content/breast-cancer.csv")
+data.head()
+data['diagnosis'] = data['diagnosis'].map({'B': 0, 'M': 1})
+
+features = data.drop(columns=["diagnosis"]).values 
+targets = data["diagnosis"].values
+s=StandardScaler()
+features1=s.fit_transform(features)
+
+b=np.random.randn(output_size)
+
+def linear_layer(x,weights,b):
+  return np.dot(weights,x)+b
+
+predictions=[]
+
+
+for i in range(len(features1)):
+    x = features1[i]  
+    ans = linear_layer(x, weights, b)
+    
+    
+    finalans = heaviside(ans)
+    predictions.append(finalans)
+    
+    
+    print(f"Sample {i+1}: Prediction = {finalans}, Actual = {targets[i]}")
+
+print(confusion_matrix(targets,predictions))
+
