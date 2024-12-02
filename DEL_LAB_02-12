@@ -1,0 +1,56 @@
+Multitask learning with early stopping in a neural network training scenario. 
+Week 6: Implmement a program on adverserial training, tangent distance, tangent prop and tangent classifier. (Any 3 to be implemented).
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+from sklearn import datasets
+import tensorflow_datasets as tfds
+
+
+#early stopping implementation
+
+ds = tfds.load('mnist', split='train')
+
+
+def preprocess(element):
+    image = element['image']
+    label = element['label']
+    image = tf.cast(image, tf.float32) / 255.0
+    return image, label
+
+ds = ds.map(preprocess).shuffle(10000).batch(32)
+
+train_size = int(0.8 * len(list(ds)))
+train_ds = ds.take(train_size)
+val_ds = ds.skip(train_size)
+
+
+
+
+model = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=(28, 28)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+
+
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+
+
+early_stopping = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss',
+    patience=3,
+    restore_best_weights=True
+)
+
+
+model.fit(train_ds,
+          validation_data=val_ds,
+          epochs=20,
+          callbacks=[early_stopping])
